@@ -1,0 +1,60 @@
+---
+/**
+ * Componente Footer - Pie de página del sitio
+ * Incluye información de la marca, enlaces y redes sociales
+ */
+---
+
+<footer class="bg-black/50 border-t border-purple-500/30 mt-16">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- Brand Section -->
+      <div class="md:col-span-2">
+        <h3 class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+          MMORPG News
+        </h3>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Tu fuente confiable de noticias, análisis y guías de los mejores MMORPGs. 
+          Mantente actualizado con todo lo que acontece en el mundo gaming.
+        </p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors" aria-label="Facebook">📘</a>
+          <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors" aria-label="Twitter">🐦</a>
+          <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors" aria-label="YouTube">📺</a>
+          <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors" aria-label="Discord">💬</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-white font-semibold mb-4">Contenido</h4>
+        <ul class="space-y-2">
+          <li><a href="/noticias" class="text-gray-400 hover:text-purple-400 transition-colors">Noticias</a></li>
+          <li><a href="/analisis" class="text-gray-400 hover:text-purple-400 transition-colors">Análisis</a></li>
+          <li><a href="/guias" class="text-gray-400 hover:text-purple-400 transition-colors">Guías</a></li>
+          <li><a href="/eventos" class="text-gray-400 hover:text-purple-400 transition-colors">Eventos</a></li>
+        </ul>
+      </div>
+
+      <!-- Info Links -->
+      <div>
+        <h4 class="text-white font-semibold mb-4">Información</h4>
+        <ul class="space-y-2">
+          <li><a href="/sobre-nosotros" class="text-gray-400 hover:text-purple-400 transition-colors">Sobre Nosotros</a></li>
+          <li><a href="/contacto" class="text-gray-400 hover:text-purple-400 transition-colors">Contacto</a></li>
+          <li><a href="/privacidad" class="text-gray-400 hover:text-purple-400 transition-colors">Privacidad</a></li>
+          <li><a href="/terminos" class="text-gray-400 hover:text-purple-400 transition-colors">Términos</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Copyright -->
+    <div class="border-t border-white/10 mt-8 pt-6 text-center">
+      <p class="text-gray-400 text-sm">
+        © 2025 MMORPG News. Todos los derechos reservados. 
+        Las marcas mencionadas pertenecen a sus respectivos propietarios.
+      </p>
+    </div>
+  </div>
+</footer>
