@@ -1,15 +1,46 @@
+---
+import "../styles/global.css";
+
+const siteTitle = "MMORPG News - Noticias y Análisis MMO";
+const siteDescription = "Últimas noticias, análisis y guías sobre MMORPG para la comunidad hispanohablante.";
+const siteUrl = "https://mmorpg-news.com";
+const ogImage = "/og-image.png";
+
+---
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{siteTitle}</title>
+    <meta name="description" content={siteDescription} />
+    <!-- Open Graph -->
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={siteDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#18122B" />
+    <link rel="canonical" href={siteUrl} />
 	</head>
-	<body>
-		<slot />
-	</body>
+	<body class="min-h-screen w-full relative bg-[#18122B] text-white overflow-x-hidden">
+			<div aria-hidden="true"
+				class="pointer-events-none fixed inset-0 -z-10">
+				<div
+					class="absolute left-1/2 top-0 -translate-x-1/2 blur-3xl opacity-40 w-[120vw] h-[60vh] 
+					bg-gradient-to-tr from-fuchsia-800 via-indigo-800 to-sky-700 rounded-full"
+					style="filter: blur(120px);"
+				></div>
+			</div>
+    <slot />
+  </body>
 </html>
 
 <style>
