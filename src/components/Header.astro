@@ -1,7 +1,7 @@
 ---
 /**
- * Componente Header - Navegación principal del sitio
- * Incluye logo, búsqueda, navegación y botones de plataforma
+ * Componente Header - Navegación principal del sitio responsive
+ * Incluye logo, búsqueda, navegación y menú móvil desplegable
  */
 ---
 
@@ -9,59 +9,124 @@
   <div class="container mx-auto px-4">
     <!-- Top Bar -->
     <div class="flex items-center justify-between py-4">
+      <!-- Mobile Menu Button (Solo móvil) -->
+      <button 
+        id="mobile-menu-btn"
+        class="md:hidden px-3 py-2 bg-purple-600 text-white rounded flex items-center hover:bg-purple-700 transition-colors"
+        aria-label="Abrir menú de navegación"
+      >
+        <span class="text-lg">☰</span>
+      </button>
+
       <!-- Logo -->
       <div class="flex items-center space-x-2">
         <a href="/" class="flex items-center space-x-2">
-          <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+          <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
             Zona Gamer
           </h1>
-          <span class="text-sm text-gray-400">Tu fuente gaming</span>
         </a>
       </div>
       
-      <!-- Búsqueda -->
-      <div class="flex-1 max-w-md mx-8">
-        <div class="relative">
-          <input 
-            type="search" 
-            placeholder="Buscar noticias..." 
-            class="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">
-            🔍
-          </button>
+      <!-- Desktop Navigation Menu (Centro) -->
+      <nav class="hidden md:flex flex-1 justify-center">
+        <div class="flex space-x-8">
+          <a href="/noticias" class="text-white hover:text-purple-400 transition-colors font-medium">Noticias</a>
+          <a href="/analisis" class="text-white hover:text-purple-400 transition-colors font-medium">Análisis</a>
+          <a href="/guias" class="text-white hover:text-purple-400 transition-colors font-medium">Guías</a>
+          <a href="/reviews" class="text-white hover:text-purple-400 transition-colors font-medium">Reviews</a>
+          <a href="/eventos" class="text-white hover:text-purple-400 transition-colors font-medium">Eventos</a>
         </div>
-      </div>
+      </nav>
       
-      <!-- User Actions -->
-      <button class="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-all">
-        Entrar • Registrarse
-      </button>
-    </div>
-    
-    <!-- Navigation Menu -->
-    <nav class="pb-4">
-      <div class="flex items-center space-x-8">
-        <button class="px-4 py-2 bg-purple-600 text-white rounded flex items-center space-x-2 hover:bg-purple-700">
-          <span>☰</span>
-          <span>SECCIONES</span>
+      <!-- Right Section: Platform Icons + User Actions -->
+      <div class="flex items-center space-x-4">
+       
+        
+        <!-- User Actions -->
+        <button class="hidden sm:block px-4 md:px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-white text-sm md:text-base font-medium hover:from-purple-700 hover:to-pink-700 transition-all">
+          <span class="hidden md:inline">Entrar • Registrarse</span>
+          <span class="md:hidden">Entrar</span>
         </button>
-        
-        <div class="flex space-x-6">
-          <a href="/noticias" class="text-white hover:text-purple-400 transition-colors">Noticias</a>
-          <a href="/analisis" class="text-white hover:text-purple-400 transition-colors">Análisis</a>
-          <a href="/guias" class="text-white hover:text-purple-400 transition-colors">Guías</a>
-          <a href="/reviews" class="text-white hover:text-purple-400 transition-colors">Reviews</a>
-          <a href="/eventos" class="text-white hover:text-purple-400 transition-colors">Eventos</a>
-        </div>
-        
-        <div class="flex space-x-3 ml-auto">
-          <span class="px-3 py-1 bg-gray-600 text-white text-xs rounded">PC</span>
-          <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded">PS</span>
-          <span class="px-3 py-1 bg-green-600 text-white text-xs rounded">XBOX</span>
-          <span class="px-3 py-1 bg-red-600 text-white text-xs rounded">📱</span>
-        </div>
       </div>
-    </nav>
+    </div>
+
+    <!-- Mobile Dropdown Menu (Solo móvil) -->
+    <div 
+      id="mobile-menu" 
+      class="md:hidden overflow-hidden bg-black/95 backdrop-blur-lg border-b border-purple-500/30 transition-all duration-300 ease-in-out"
+      style="max-height: 0;"
+    >
+      <nav class="px-4 py-4 space-y-2">
+        <a href="/noticias" class="block px-4 py-3 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all font-medium">
+          Noticias
+        </a>
+        <a href="/analisis" class="block px-4 py-3 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all font-medium">
+          Análisis
+        </a>
+        <a href="/guias" class="block px-4 py-3 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all font-medium">
+          Guías
+        </a>
+        <a href="/reviews" class="block px-4 py-3 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all font-medium">
+          Reviews
+        </a>
+        <a href="/eventos" class="block px-4 py-3 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all font-medium">
+          Eventos
+        </a>
+      </nav>
+    </div>
   </div>
 </header>
+
+<!-- JavaScript para el menú móvil -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', function() {
+        isMenuOpen = !isMenuOpen;
+        
+        if (isMenuOpen) {
+          // Expandir menú dropdown
+          mobileMenu.style.maxHeight = '300px'; // Suficiente para 5 enlaces
+          
+          // Cambiar icono del botón
+          mobileMenuBtn.innerHTML = '<span class="text-lg">✕</span>';
+          mobileMenuBtn.setAttribute('aria-label', 'Cerrar menú de navegación');
+        } else {
+          // Colapsar menú dropdown
+          mobileMenu.style.maxHeight = '0';
+          
+          // Cambiar icono del botón
+          mobileMenuBtn.innerHTML = '<span class="text-lg">☰</span>';
+          mobileMenuBtn.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+      });
+
+      // Cerrar menú al hacer clic en los enlaces
+      const menuLinks = mobileMenu.querySelectorAll('a');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (isMenuOpen) {
+            isMenuOpen = false;
+            mobileMenu.style.maxHeight = '0';
+            mobileMenuBtn.innerHTML = '<span class="text-lg">☰</span>';
+            mobileMenuBtn.setAttribute('aria-label', 'Abrir menú de navegación');
+          }
+        });
+      });
+
+      // Cerrar menú al redimensionar la ventana (cuando pasa a desktop)
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768 && isMenuOpen) {
+          isMenuOpen = false;
+          mobileMenu.style.maxHeight = '0';
+          mobileMenuBtn.innerHTML = '<span class="text-lg">☰</span>';
+          mobileMenuBtn.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+      });
+    }
+  });
+</script>
