@@ -72,7 +72,7 @@ const popularGames = [
   <Header />
 
   <!-- Main Content -->
-  <main class="container mx-auto px-4 py-8">
+  <main class="container mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 max-w-[70%]">
     
     <!-- Page Title -->
     <div class="mb-8">
@@ -81,68 +81,16 @@ const popularGames = [
       </h1>
     </div>
     
-    <!-- Featured News Section -->
-    <section class="mb-12">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-96">
-        <!-- Main Featured Article -->
-        <article class="lg:col-span-2 relative rounded-xl overflow-hidden group cursor-pointer">
-          <img 
-            src={featuredNews[0].image} 
-            alt={featuredNews[0].title}
-            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-            <div class="absolute bottom-0 p-6">
-              <div class="flex space-x-2 mb-3">
-                <span class="px-2 py-1 bg-purple-600 text-white text-xs rounded">{featuredNews[0].category}</span>
-                <span class="px-2 py-1 bg-pink-600 text-white text-xs rounded">{featuredNews[0].platform}</span>
-              </div>
-              <h2 class="text-2xl font-bold text-white mb-2 leading-tight">{featuredNews[0].title}</h2>
-              <p class="text-gray-200 mb-3">{featuredNews[0].excerpt}</p>
-              <span class="text-gray-400 text-sm">{featuredNews[0].date}</span>
-            </div>
-          </div>
-        </article>
-        
-        <!-- Secondary Featured -->
-        <article class="relative rounded-xl overflow-hidden group cursor-pointer">
-          <img 
-            src={featuredNews[1].image} 
-            alt={featuredNews[1].title}
-            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
-            <div class="absolute bottom-0 p-4">
-              <div class="flex space-x-2 mb-2">
-                <span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">{featuredNews[1].category}</span>
-              </div>
-              <h3 class="text-lg font-bold text-white mb-2 leading-tight">{featuredNews[1].title}</h3>
-              <span class="text-gray-400 text-sm">{featuredNews[1].date}</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
+ 
 
     <!-- Main Layout: Content + Sidebar -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
       
       <!-- Main Content Area -->
       <section class="lg:col-span-3">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-white">Todas las Noticias</h2>
-          <div class="flex space-x-2">
-            <button class="px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors">
-              Recientes
-            </button>
-            <button class="px-3 py-1 bg-white/10 text-gray-300 text-sm rounded hover:bg-white/20 transition-colors">
-              Populares
-            </button>
-          </div>
-        </div>
         
         <!-- News Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1  gap-6">
           {latestNews.map((article, index) => (
             <article class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 transition-all duration-300 group cursor-pointer">
               <div class="relative">
@@ -193,22 +141,6 @@ const popularGames = [
                 <p class="text-white text-sm leading-relaxed group-hover:text-purple-300 transition-colors">
                   {item}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <!-- Popular Games -->
-        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-          <h3 class="text-xl font-bold text-pink-400 mb-4">🎮 Juegos Populares</h3>
-          <div class="space-y-3">
-            {popularGames.map((game) => (
-              <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
-                <div class="text-2xl">{game.icon}</div>
-                <div class="flex-1">
-                  <h4 class="text-white font-medium text-sm">{game.name}</h4>
-                  <p class="text-gray-400 text-xs">{game.players} jugadores</p>
-                </div>
               </div>
             ))}
           </div>
