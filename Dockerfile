@@ -22,4 +22,4 @@ COPY --from=builder /app ./
 EXPOSE 4321
 
 # Comando para iniciar Astro en modo preview (producción)
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4321", "--allowed-hosts", "zonagamer.online,www.zonagamer.online"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4322", "--allowed-hosts", "zonagamer.online,www.zonagamer.online"]
