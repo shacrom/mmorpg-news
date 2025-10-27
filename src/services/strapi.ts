@@ -54,24 +54,29 @@ export interface StrapiResponse<T> {
  */
 export async function getNews(page = 1, pageSize = 10): Promise<StrapiResponse<StrapiNews[]>> {
   try {
-    const response = await fetch(
-      `${STRAPI_URL}/api/news?pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=publishedAt:desc&populate=cover_image`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const url = `${STRAPI_URL}/api/news?pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=publishedAt:desc&populate=cover_image`;
+    console.log('[Strapi] Fetching news from:', url);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('[Strapi] Response status:', response.status);
 
     if (!response.ok) {
-      console.error('Error fetching news from Strapi:', response.status);
+      console.error('[Strapi] Error fetching news:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('[Strapi] Error body:', errorText);
       return { data: [], meta: {} };
     }
 
     const data = await response.json();
+    console.log('[Strapi] Response data:', JSON.stringify(data, null, 2));
     return data;
   } catch (error) {
-    console.error('Error connecting to Strapi:', error);
+    console.error('[Strapi] Error connecting to Strapi:', error);
     return { data: [], meta: {} };
   }
 }
