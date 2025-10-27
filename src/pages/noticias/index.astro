@@ -7,6 +7,16 @@ import { getNews, formatPublishedDate, getImageUrl } from '../../services/strapi
 // Obtener noticias desde Strapi
 const newsResponse = await getNews(1, 10);
 const latestNews = newsResponse.data;
+
+// Debug: Log para ver qué está pasando
+console.log('=== DEBUG NOTICIAS ===');
+console.log('STRAPI_URL:', import.meta.env.PUBLIC_STRAPI_URL || 'http://strapi-zona:1338');
+console.log('Total noticias:', latestNews.length);
+console.log('Response completo:', JSON.stringify(newsResponse, null, 2));
+if (latestNews.length > 0) {
+  console.log('Primera noticia:', JSON.stringify(latestNews[0], null, 2));
+}
+console.log('======================');
 ---
 
 <Layout>
@@ -14,6 +24,19 @@ const latestNews = newsResponse.data;
 
   <!-- Main Content -->
   <main class="container mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 max-w-[1400px]">
+    
+    <!-- Debug Info (temporal) -->
+    <div class="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-sm">
+      <p class="text-yellow-300 font-mono">
+        <strong>DEBUG:</strong> Strapi URL: {import.meta.env.PUBLIC_STRAPI_URL || 'http://strapi-zona:1338'}
+      </p>
+      <p class="text-yellow-300 font-mono">
+        <strong>DEBUG:</strong> Total noticias: {latestNews.length}
+      </p>
+      <p class="text-yellow-300 font-mono">
+        <strong>DEBUG:</strong> Meta: {JSON.stringify(newsResponse.meta)}
+      </p>
+    </div>
     
     <!-- Page Title -->
     <div class="mb-8">
