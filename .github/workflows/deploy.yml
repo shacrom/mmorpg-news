@@ -18,8 +18,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
           script: |
-            cd https://github.com/shacrom/mmorpg-news
+            cd /root/workspace/zona-gamer/zona-gamer-news
             git pull origin main
             docker compose down
             docker compose build
