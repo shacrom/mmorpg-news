@@ -13,13 +13,11 @@ export interface StrapiNews {
   coverlmage: {
     data: {
       id: number;
-      attributes: {
-        url: string;
-        name: string;
-        alternativeText?: string;
-        width: number;
-        height: number;
-      };
+      url: string;
+      name: string;
+      alternativeText?: string;
+      width: number;
+      height: number;
     } | null;
   };
   category: string;
