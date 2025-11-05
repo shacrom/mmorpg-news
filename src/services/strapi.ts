@@ -6,33 +6,31 @@ const STRAPI_URL = import.meta.env.STRAPI_URL || 'http://strapi-zona:1338';
 // Interfaz para las noticias de Strapi
 export interface StrapiNews {
   id: number;
-  attributes: {
-    title: string;
-    summary: string;
-    publishedAt: string;
-    source_url: string;
-    slug: string;
-    content: string;
-    category: string;
-    tags: string;
-    cover_image: {
-      data: {
-        id: number;
-        attributes: {
-          url: string;
-          name: string;
-          alternativeText?: string;
-          width: number;
-          height: number;
-        };
-      } | null;
-    };
-    seo_description: string;
-    featured: boolean;
-    views: number;
-    seo_title: string;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  coverlmage: {
+    data: {
+      id: number;
+      attributes: {
+        url: string;
+        name: string;
+        alternativeText?: string;
+        width: number;
+        height: number;
+      };
+    } | null;
   };
-}
+  category: string;
+  tags: string;
+  sourceUrl: string;
+  publishedAt: string;
+  featured: boolean;
+  views: number;
+  seoTitle: string;
+  seoDescription: string;
+};
 
 export interface StrapiResponse<T> {
   data: T;
@@ -57,7 +55,7 @@ export async function getNews(token: any, page = 1, pageSize = 10): Promise<Stra
     // const url = `${STRAPI_URL}/news?_limit=${pageSize}&_start=${(page - 1) * pageSize}&_sort=publishedAt:DESC`;
     const url = `${STRAPI_URL}/news`;
     console.log('[Strapi] Fetching news from:', url);
-    
+
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -76,16 +74,16 @@ export async function getNews(token: any, page = 1, pageSize = 10): Promise<Stra
 
     const rawData = await response.json();
     console.log('[Strapi] Response data:', JSON.stringify(rawData, null, 2));
-    
+
     // Strapi v3 devuelve un array directo, no { data: [...] }
     // Convertimos al formato esperado
     const data = Array.isArray(rawData) ? rawData : [];
-    return { 
+    return {
       data: data.map((item: any) => ({
         id: item.id,
-        attributes: item
+        ...item
       })),
-      meta: {} 
+      meta: {}
     };
   } catch (error) {
     console.error('[Strapi] Error connecting to Strapi:', error);
@@ -117,12 +115,12 @@ export async function getNewsBySlug(slug: string): Promise<StrapiNews | null> {
 
     const rawData = await response.json();
     const data = Array.isArray(rawData) ? rawData : [];
-    
+
     if (data.length === 0) return null;
-    
+
     return {
       id: data[0].id,
-      attributes: data[0]
+      ...data[0]
     };
   } catch (error) {
     console.error('Error fetching news by slug:', error);
@@ -154,10 +152,10 @@ export async function getFeaturedNews(limit = 5): Promise<StrapiNews[]> {
 
     const rawData = await response.json();
     const data = Array.isArray(rawData) ? rawData : [];
-    
+
     return data.map((item: any) => ({
       id: item.id,
-      attributes: item
+      ...item
     }));
   } catch (error) {
     console.error('Error fetching featured news:', error);
@@ -199,20 +197,20 @@ export function formatPublishedDate(dateString: string): string {
  * @returns URL completa de la imagen o imagen por defecto
  */
 export function getImageUrl(news: StrapiNews): string {
-  // En Strapi v3, cover_image puede ser un objeto directo o tener estructura .data
-  const coverImage = news.attributes.cover_image?.data?.attributes?.url || 
-                     (news.attributes.cover_image as any)?.url;
-  
+  // En Strapi v3, coverlmage puede ser un objeto directo o tener estructura .data
+  const coverImage = news.coverlmage?.data?.attributes?.url ||
+    (news.coverlmage as any)?.url;
+
   if (!coverImage) {
-    // Imagen por defecto si no hay cover_image
+    // Imagen por defecto si no hay coverlmage
     return 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop';
   }
-  
+
   // Si la URL ya es completa (http/https), la devolvemos tal cual
   if (coverImage.startsWith('http')) {
     return coverImage;
   }
-  
+
   // Si es una ruta relativa, la combinamos con la URL de Strapi
   return `${STRAPI_URL}${coverImage}`;
 }
