@@ -1,7 +1,7 @@
 // Configuración de Strapi
 // En producción (Docker): usa el nombre del contenedor y puerto interno
 // En desarrollo local: usa localhost con el puerto mapeado
-const STRAPI_URL = import.meta.env.PUBLIC_STRAPI_URL || 'http://strapi-zona:1338';
+const STRAPI_URL = import.meta.env.STRAPI_URL || 'http://strapi-zona:1338';
 
 // Interfaz para las noticias de Strapi
 export interface StrapiNews {
@@ -52,13 +52,15 @@ export interface StrapiResponse<T> {
  * @param pageSize - Cantidad de noticias por página
  * @returns Lista de noticias
  */
-export async function getNews(page = 1, pageSize = 10): Promise<StrapiResponse<StrapiNews[]>> {
+export async function getNews(token: any, page = 1, pageSize = 10): Promise<StrapiResponse<StrapiNews[]>> {
   try {
-    const url = `${STRAPI_URL}/api/news?pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort=publishedAt:desc&populate=cover_image`;
+    // const url = `${STRAPI_URL}/news?_limit=${pageSize}&_start=${(page - 1) * pageSize}&_sort=publishedAt:DESC`;
+    const url = `${STRAPI_URL}/news`;
     console.log('[Strapi] Fetching news from:', url);
     
     const response = await fetch(url, {
       headers: {
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -72,9 +74,19 @@ export async function getNews(page = 1, pageSize = 10): Promise<StrapiResponse<S
       return { data: [], meta: {} };
     }
 
-    const data = await response.json();
-    console.log('[Strapi] Response data:', JSON.stringify(data, null, 2));
-    return data;
+    const rawData = await response.json();
+    console.log('[Strapi] Response data:', JSON.stringify(rawData, null, 2));
+    
+    // Strapi v3 devuelve un array directo, no { data: [...] }
+    // Convertimos al formato esperado
+    const data = Array.isArray(rawData) ? rawData : [];
+    return { 
+      data: data.map((item: any) => ({
+        id: item.id,
+        attributes: item
+      })),
+      meta: {} 
+    };
   } catch (error) {
     console.error('[Strapi] Error connecting to Strapi:', error);
     return { data: [], meta: {} };
@@ -88,8 +100,10 @@ export async function getNews(page = 1, pageSize = 10): Promise<StrapiResponse<S
  */
 export async function getNewsBySlug(slug: string): Promise<StrapiNews | null> {
   try {
+    // Strapi v3 usa rutas sin /api/
+    // El Content Type se llama "test"
     const response = await fetch(
-      `${STRAPI_URL}/api/news?filters[slug][$eq]=${slug}&populate=cover_image`,
+      `${STRAPI_URL}/test?slug=${slug}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -101,8 +115,15 @@ export async function getNewsBySlug(slug: string): Promise<StrapiNews | null> {
       return null;
     }
 
-    const data: StrapiResponse<StrapiNews[]> = await response.json();
-    return data.data.length > 0 ? data.data[0] : null;
+    const rawData = await response.json();
+    const data = Array.isArray(rawData) ? rawData : [];
+    
+    if (data.length === 0) return null;
+    
+    return {
+      id: data[0].id,
+      attributes: data[0]
+    };
   } catch (error) {
     console.error('Error fetching news by slug:', error);
     return null;
@@ -116,8 +137,10 @@ export async function getNewsBySlug(slug: string): Promise<StrapiNews | null> {
  */
 export async function getFeaturedNews(limit = 5): Promise<StrapiNews[]> {
   try {
+    // Strapi v3 usa rutas sin /api/
+    // El Content Type se llama "test"
     const response = await fetch(
-      `${STRAPI_URL}/api/news?filters[featured][$eq]=true&pagination[pageSize]=${limit}&sort=publishedAt:desc&populate=cover_image`,
+      `${STRAPI_URL}/test?featured=true&_limit=${limit}&_sort=publishedAt:DESC`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -129,8 +152,13 @@ export async function getFeaturedNews(limit = 5): Promise<StrapiNews[]> {
       return [];
     }
 
-    const data: StrapiResponse<StrapiNews[]> = await response.json();
-    return data.data;
+    const rawData = await response.json();
+    const data = Array.isArray(rawData) ? rawData : [];
+    
+    return data.map((item: any) => ({
+      id: item.id,
+      attributes: item
+    }));
   } catch (error) {
     console.error('Error fetching featured news:', error);
     return [];
@@ -171,7 +199,9 @@ export function formatPublishedDate(dateString: string): string {
  * @returns URL completa de la imagen o imagen por defecto
  */
 export function getImageUrl(news: StrapiNews): string {
-  const coverImage = news.attributes.cover_image?.data?.attributes?.url;
+  // En Strapi v3, cover_image puede ser un objeto directo o tener estructura .data
+  const coverImage = news.attributes.cover_image?.data?.attributes?.url || 
+                     (news.attributes.cover_image as any)?.url;
   
   if (!coverImage) {
     // Imagen por defecto si no hay cover_image

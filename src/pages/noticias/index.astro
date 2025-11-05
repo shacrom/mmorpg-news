@@ -4,19 +4,44 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { getNews, formatPublishedDate, getImageUrl } from '../../services/strapi';
 
-// Obtener noticias desde Strapi
-const newsResponse = await getNews(1, 10);
-const latestNews = newsResponse.data;
+const STRAPI_URL = import.meta.env.STRAPI_URL || 'http://localhost:1337';
+const token = Astro.cookies.get('strapi_jwt')?.value;
 
-// Debug: Log para ver qué está pasando
-console.log('=== DEBUG NOTICIAS ===');
-console.log('STRAPI_URL:', import.meta.env.PUBLIC_STRAPI_URL || 'http://strapi-zona:1338');
-console.log('Total noticias:', latestNews.length);
-console.log('Response completo:', JSON.stringify(newsResponse, null, 2));
-if (latestNews.length > 0) {
-  console.log('Primera noticia:', JSON.stringify(latestNews[0], null, 2));
+async function fetchNoticias() {
+  if (!token) {
+    console.error('No se pudo obtener el token de Strapi desde la cookie');
+    return [];
+  }
+
+  try {
+    const response = await fetch(`${STRAPI_URL}/noticias`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error obteniendo noticias');
+    }
+
+    const noticias = await response.json();
+    return noticias;
+  } catch (error) {
+    console.error('Error obteniendo noticias:', error);
+    return [];
+  }
 }
-console.log('======================');
+
+const noticias = await fetchNoticias();
+
+const latestNews = noticias.map((noticia: any) => ({
+  id: noticia.slug || noticia.id,
+  data: {
+    title: noticia.title,
+    pubDate: new Date(noticia.publishedAt || noticia.published_at),
+    heroImage: noticia.cover_image ? `${noticia.cover_image}` : null
+  }
+})).sort((a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Layout>
@@ -24,19 +49,6 @@ console.log('======================');
 
   <!-- Main Content -->
   <main class="container mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 max-w-[1400px]">
-    
-    <!-- Debug Info (temporal) -->
-    <div class="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-sm">
-      <p class="text-yellow-300 font-mono">
-        <strong>DEBUG:</strong> Strapi URL: {import.meta.env.PUBLIC_STRAPI_URL || 'http://strapi-zona:1338'}
-      </p>
-      <p class="text-yellow-300 font-mono">
-        <strong>DEBUG:</strong> Total noticias: {latestNews.length}
-      </p>
-      <p class="text-yellow-300 font-mono">
-        <strong>DEBUG:</strong> Meta: {JSON.stringify(newsResponse.meta)}
-      </p>
-    </div>
     
     <!-- Page Title -->
     <div class="mb-8">
@@ -61,7 +73,7 @@ console.log('======================');
           </div>
         ) : (
           <div class="flex flex-col gap-4">
-            {latestNews.map((news) => {
+            {latestNews.map((news: any) => {
               const article = news.attributes;
               return (
                 <article class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden hover:bg-white/10 transition-all duration-300 group cursor-pointer">

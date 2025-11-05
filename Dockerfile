@@ -25,7 +25,7 @@ EXPOSE 4322
 
 ENV HOST=0.0.0.0
 ENV PORT=4322
-ENV PUBLIC_STRAPI_URL=http://strapi-zona:1338
+ENV STRAPI_URL=http://strapi-zona:1338
 
 # Comando para iniciar Astro SSR
 CMD ["node", "./dist/server/entry.mjs"]
