@@ -196,7 +196,7 @@ export function formatPublishedDate(dateString: string): string {
  */
 export function getImageUrl(news: StrapiNews): string {
   // En Strapi v3, coverlmage puede ser un objeto directo o tener estructura .data
-  const coverImage = news.coverlmage?.data?.attributes?.url ||
+  const coverImage = news.coverlmage?.data?.url ||
     (news.coverlmage as any)?.url;
 
   if (!coverImage) {
