@@ -12,12 +12,12 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
+  server: {
+    port: 4322
+  },
   vite: {
     plugins: [tailwindcss()],
     preview: { allowedHosts: ['zonagamer.online', 'www.zonagamer.online'] },
-    server: {
-      port: 4322
-    },
   },
   integrations: [mdx(), sitemap()]
 });
